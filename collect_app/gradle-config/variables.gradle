@@ -1,0 +1,207 @@
+/**************************************************************************************************
+                                        GRADLE VARIABLES
+ *************************************************************************************************/
+
+/*
+*   @author: marshallbradley93@gmail.com
+*
+*   This Gradle script contains common build logic in the form of variables (this includes, but is
+*   not limited to version codes and the like). These variables are dispatched to the relevant
+*   project files via either local or remote.gradle.
+*
+*   @TODO: Use objects, convert to custom Gradle plugin
+*/
+
+/**************************************************************************************************
+                                        VERSION CODES
+ *************************************************************************************************/
+
+logger.warn('gradle-config/variables.gradle -- gradle.ext.workspacePath: ' + gradle.ext.workspacePath)
+
+// ODK Application versions
+ext.groupId = 'org.opendatakit' // ApplicationID is groupId + appName
+ext.releaseVersionCode = 200
+ext.inProgressVersionCode = 'b'
+ext.versionCodeName = '2.0 rev ' + ext.releaseVersionCode + ext.inProgressVersionCode
+
+// SDK versions
+ext.compileVersion = 22
+ext.minVersion = 16
+ext.targetVersion = 19
+
+// Build tools
+ext.buildTools = "23.0.3"
+
+// Java version
+ext.javaVersion = JavaVersion.VERSION_1_7
+
+// Grab the latest binary version from the server
+ext.latestVersion = 'latest.integration'
+
+// Google Play Services version
+ext.gpsVersion = "6.5.87"
+
+/**************************************************************************************************
+                                        GLOBAL VARIABLES
+ *************************************************************************************************/
+
+ext.testCoverage = true // Toggles AndroidTest JaCoCo reports
+ext.minify = false // Toggles minify for the release build
+
+// List of files to apply "PickFirst" to in Gradle dependencies closure
+ext.packageList =   ['META-INF/DEPENDENCIES',
+                    'META-INF/LICENSE',
+                    'META-INF/LICENSE.txt',
+                    'META-INF/NOTICE',
+                    'META-INF/NOTICE.txt',
+                    'META-INF/services/com.fasterxml.jackson.core.JsonFactory',
+                    'META-INF/services/com.fasterxml.jackson.core.ObjectCodec',
+                    'META-INF/services/javax.ws.rs.ext.MessageBodyReader',
+                    'META-INF/services/javax.ws.rs.ext.MessageBodyWriter']
+
+ext.signStoreFilePath = System.getenv("KEYSTORE")
+ext.signStorePass = System.getenv("KEYSTORE_PASSWORD")
+ext.signKeyAlias = System.getenv("KEY_ALIAS")
+ext.signKeyPass = System.getenv("KEY_PASSWORD")
+ext.shouldSign = System.getenv("KEYSTORE") != null
+
+/**************************************************************************************************
+                                        VARIANT CLASSIFIERS
+ *************************************************************************************************/
+ext.demoRelease = gradle.ext.flavorDemoPrefix + gradle.ext.typeReleaseSuffix
+ext.demoDebug = gradle.ext.flavorDemoPrefix + gradle.ext.typeDebugSuffix
+
+ext.masterRelease = gradle.ext.flavorMasterPrefix + gradle.ext.typeReleaseSuffix
+ext.masterDebug = gradle.ext.flavorMasterPrefix + gradle.ext.typeDebugSuffix
+
+ext.snapshotRelease = gradle.ext.flavorSnapshotPrefix + gradle.ext.typeReleaseSuffix
+ext.snapshotDebug = gradle.ext.flavorSnapshotPrefix + gradle.ext.typeDebugSuffix
+
+ext.uitestRelease = gradle.ext.flavorUITestPrefix + gradle.ext.typeReleaseSuffix
+ext.uitestDebug = gradle.ext.flavorUITestPrefix + gradle.ext.typeDebugSuffix
+
+/**************************************************************************************************
+                                             TEST
+ *************************************************************************************************/
+// Test app naming scheme
+ext.testNameSuffix = ".test"
+
+// Instrumentation runner to register
+ext.instrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+
+// Min SDK for UI Automator testing
+ext.uitestMinSDK = 18
+
+
+/**************************************************************************************************
+                                          NAMES (libs)
+ *************************************************************************************************/
+
+/* -- LIBRARY -- */
+
+// Path from top-level Gradle script to local version of AndroidLibrary
+ext.libraryProjectPath = new File(gradle.ext.workspacePath + "/androidlibrary/androidlibrary_lib")
+
+// Root project name
+ext.libraryProjectRoot = ':androidlibrary'
+
+// Child project name
+ext.libraryProjectChild = ':androidlibrary_lib'
+
+// External child project name
+ext.libraryProjectName = ext.libraryProjectRoot + ext.libraryProjectChild
+
+// Demo Artifact name
+ext.libraryDemoArtifactName = gradle.ext.flavorDemoPrefix + gradle.ext.libraryArchiveSuffix
+
+// Master Artifact name
+ext.libraryMasterArtifactName = gradle.ext.flavorMasterPrefix + gradle.ext.libraryArchiveSuffix
+
+// Snapshot Artifact name
+ext.librarySnapshotArtifactName = gradle.ext.flavorSnapshotPrefix + gradle.ext.libraryArchiveSuffix
+
+// UITest Artifact name
+ext.libraryUITestArtifactName = gradle.ext.flavorUITestPrefix + gradle.ext.libraryArchiveSuffix
+
+/* -- COMMON -- */
+
+// Path from top-level Gradle script to local version of AndroidCommon
+ext.commonProjectPath = new File(gradle.ext.workspacePath + "/androidcommon/androidcommon_lib")
+
+// Root project name
+ext.commonProjectRoot = ':androidcommon'
+
+// Child project name
+ext.commonProjectChild = ':androidcommon_lib'
+
+// External child project name
+ext.commonProjectName = ext.commonProjectRoot + ext.commonProjectChild
+
+// Demo Artifact name
+ext.commonDemoArtifactName = gradle.ext.flavorDemoPrefix + gradle.ext.commonArchiveSuffix
+
+// Master Artifact name
+ext.commonMasterArtifactName = gradle.ext.flavorMasterPrefix + gradle.ext.commonArchiveSuffix
+
+// Snapshot Artifact name
+ext.commonSnapshotArtifactName = gradle.ext.flavorSnapshotPrefix + gradle.ext.commonArchiveSuffix
+
+// UITest Artifact name
+ext.commonUITestArtifactName = gradle.ext.flavorUITestPrefix + gradle.ext.commonArchiveSuffix
+
+/* -- SENSORS (lib) (SENSORSINTERFACES) -- */
+
+// Path from top-level Gradle script to local version of SensorsInterfaces
+ext.sensorsInterfacesProjectPath = new File(gradle.ext.workspacePath + "/sensors/sensorsinterfaces_lib")
+
+// Root project name
+ext.sensorsProjectRoot = ':sensors'
+
+// Child project name
+ext.sensorsInterfacesProjectChild = ':sensorsinterfaces_lib'
+
+// External child project name
+ext.sensorsInterfacesProjectName = ext.sensorsProjectRoot + ext.sensorsInterfacesProjectChild
+
+// Artifact name
+ext.sensorsInterfacesArtifactName = 'sensorsInterfaces_lib'
+
+
+/**************************************************************************************************
+                                          NAMES (apps)
+ *************************************************************************************************/
+
+/* -- Services -- */
+
+ext.servicesProjectChild = ':services_app'
+ext.servicesName = '.services'
+
+/* -- SCAN -- */
+
+ext.scanProjectChild = ':scan_app'
+ext.scanName = '.scan'
+
+/* -- SURVEY -- */
+
+ext.surveyProjectChild = ':survey_app'
+ext.surveyName = '.survey.android'
+
+/* -- SYNC -- */
+
+ext.syncProjectChild = ':sync_app'
+ext.syncName = '.sync'
+
+/* -- TABLES -- */
+
+ext.tablesProjectChild = ':tables_app'
+ext.tablesName = '.tables'
+
+/* -- SENSORS (app) (SENSORSFRAMEWORK) -- */
+
+ext.sensorsFrameworkProjectChild = ':sensorsframework_app'
+ext.sensorsFrameworkName = '.sensors'
+
+/* -- Collect-- */
+
+ext.collectProjectChild = ':collect_app'
+ext.collectName = '.collect'
